@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Table from '@/views/Table'
 
 Vue.use(VueRouter)
 
@@ -11,18 +12,12 @@ const routes = [
   {
     path: '/table',
     name: 'table',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "table" */ '../views/Table.vue')
+    component: Table,
   },
   {
     path: '/chart',
     name: 'chart',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "chart" */ '../views/Chart.vue')
+    component: () => import(/* webpackChunkName: "chart" */ '../views/Chart.vue'),
   },
 ]
 
