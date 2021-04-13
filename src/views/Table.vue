@@ -9,12 +9,21 @@
       :loading="loading"
       loading-text="Loading countries data..."
     >
+    <template v-slot:item.TotalConfirmed="{ item }">
+      {{item.TotalConfirmed | formatNumber}}
+    </template>
+    <template v-slot:item.TotalDeaths="{ item }">
+      {{item.TotalConfirmed | formatNumber}}
+    </template>
+    <template v-slot:item.TotalRecovered="{ item }">
+      {{item.TotalConfirmed | formatNumber}}
+    </template>
       <template slot="body.append">
-        <tr class="pink--text">
-          <th class="title">Totals</th>
-          <th class="title">{{ sumField("activeCases") }}</th>
-          <th class="title">{{ sumField("deathCases") }}</th>
-          <th class="title">{{ sumField("recoveryCases") }}</th>
+        <tr>
+          <th class="body-2 text-uppercase font-weight-bold">Totals</th>
+          <th class="body-2  font-weight-bold text-right">{{ total.confirmed | formatNumber }}</th>
+          <th class="body-2  font-weight-bold text-right">{{ total.deaths | formatNumber}}</th>
+          <th class="body-2  font-weight-bold text-right">{{ total.recovered | formatNumber}}</th>
         </tr>
       </template>
     </v-data-table>
@@ -22,32 +31,41 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import { COUNTRY, ACTIVE_CASES, DEATH_CASES, RECOVERED_CASES} from '../shared/table-fields';
-
 
 export default {
   data() {
     return {
       headers: [
-        { text: "Country", value: COUNTRY },
-        { text: "Total Confirmed", value: ACTIVE_CASES },
-        { text: "Total Deaths", value: DEATH_CASES },
-        { text: "Total Recovered", value: RECOVERED_CASES },
+        { text: "Country", value: 'Country'},
+        { text: "Total Confirmed", value: 'TotalConfirmed', align: 'end' },
+        { text: "Total Deaths", value: 'TotalDeaths', align: 'end' },
+        { text: "Total Recovered", value: 'TotalRecovered', align: 'end' },
       ],
       loading: false,
     };
   },
   computed: {
     ...mapState(["countriesData"]),
+    total(){
+      const reducer = (acc, cur) => {
+        acc.confirmed += cur.TotalConfirmed;
+        acc.deaths += cur.TotalDeaths;
+        acc.recovered += cur.TotalRecovered;
+        return acc;
+      }
+      return this.countriesData.reduce(reducer,{confirmed: 0, deaths: 0, recovered: 0})
+    }
   },
   methods: {
     ...mapActions(["getCountriesData"]),
+
     async loadCountriesData() {
       this.loading = true;
       await this.getCountriesData();
       this.loading = false;
     },
     sumField(field) {
+      console.log('filedddddd', field)
       this.countriesData.reduce(
         (accumulator, currentValue) => (currentValue += accumulator[field])
       );

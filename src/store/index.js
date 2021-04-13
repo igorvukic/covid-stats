@@ -20,10 +20,9 @@ const actions = {
     const countriesData = await dataService.getCountriesData();
     commit(GET_COUNTRIES_DATA, countriesData);
   }
-
 };
 
-const getters ={
+const getters = {
 
 }
 
