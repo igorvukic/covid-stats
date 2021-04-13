@@ -1,15 +1,14 @@
 <template>
   <v-toolbar
   flat
+  class="my-6 mx-0"
   >
-    <v-toolbar-title>Country selection</v-toolbar-title>
     <v-autocomplete
       v-model="select"
       :loading="loading"
       :items="items"
       :search-input.sync="search"
       cache-items
-      class="mx-4"
       hide-no-data
       hide-details
       label="Which countries are you intrested in?"

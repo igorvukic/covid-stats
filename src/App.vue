@@ -3,6 +3,9 @@
     <Navbar />
     <v-main>
       <v-container>
+        <h1>
+         <span class="title font-weight-bold">Dashboard</span>
+        </h1>
         <Filtering />
         <router-view></router-view>
       </v-container>
