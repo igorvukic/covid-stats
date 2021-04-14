@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
       :headers="headers"
-      :items="countriesData"
+      :items="filteredCountriesData"
       class="elevation-1"
       disable-pagination
       hide-default-footer
@@ -13,10 +13,10 @@
       {{item.TotalConfirmed | formatNumber}}
     </template>
     <template v-slot:item.TotalDeaths="{ item }">
-      {{item.TotalConfirmed | formatNumber}}
+      {{item.TotalDeaths | formatNumber}}
     </template>
     <template v-slot:item.TotalRecovered="{ item }">
-      {{item.TotalConfirmed | formatNumber}}
+      {{item.TotalRecovered | formatNumber}}
     </template>
       <template slot="body.append">
         <tr>
@@ -45,7 +45,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["countriesData"]),
+    ...mapState(["filteredCountriesData"]),
     total(){
       const reducer = (acc, cur) => {
         acc.confirmed += cur.TotalConfirmed;
@@ -53,7 +53,7 @@ export default {
         acc.recovered += cur.TotalRecovered;
         return acc;
       }
-      return this.countriesData.reduce(reducer,{confirmed: 0, deaths: 0, recovered: 0})
+      return this.filteredCountriesData.reduce(reducer,{confirmed: 0, deaths: 0, recovered: 0})
     }
   },
   methods: {
@@ -63,12 +63,6 @@ export default {
       this.loading = true;
       await this.getCountriesData();
       this.loading = false;
-    },
-    sumField(field) {
-      console.log('filedddddd', field)
-      this.countriesData.reduce(
-        (accumulator, currentValue) => (currentValue += accumulator[field])
-      );
     },
   },
   async created() {

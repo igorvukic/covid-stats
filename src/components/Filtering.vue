@@ -4,9 +4,8 @@
   class="my-6 mx-0"
   >
     <v-autocomplete
-      v-model="select"
-      :loading="loading"
-      :items="items"
+      v-model="selectedItems"
+      :items="foundItems"
       :search-input.sync="search"
       cache-items
       hide-no-data
@@ -20,92 +19,37 @@
   </v-toolbar>
 </template>
 <script>
+import { mapActions, mapGetters } from 'vuex'
   export default {
     data () {
       return {
-        loading: false,
-        items: [],
+        foundItems: [],
         search: null,
-        select: null,
-        states: [
-          'Alabama',
-          'Alaska',
-          'American Samoa',
-          'Arizona',
-          'Arkansas',
-          'California',
-          'Colorado',
-          'Connecticut',
-          'Delaware',
-          'District of Columbia',
-          'Federated States of Micronesia',
-          'Florida',
-          'Georgia',
-          'Guam',
-          'Hawaii',
-          'Idaho',
-          'Illinois',
-          'Indiana',
-          'Iowa',
-          'Kansas',
-          'Kentucky',
-          'Louisiana',
-          'Maine',
-          'Marshall Islands',
-          'Maryland',
-          'Massachusetts',
-          'Michigan',
-          'Minnesota',
-          'Mississippi',
-          'Missouri',
-          'Montana',
-          'Nebraska',
-          'Nevada',
-          'New Hampshire',
-          'New Jersey',
-          'New Mexico',
-          'New York',
-          'North Carolina',
-          'North Dakota',
-          'Northern Mariana Islands',
-          'Ohio',
-          'Oklahoma',
-          'Oregon',
-          'Palau',
-          'Pennsylvania',
-          'Puerto Rico',
-          'Rhode Island',
-          'South Carolina',
-          'South Dakota',
-          'Tennessee',
-          'Texas',
-          'Utah',
-          'Vermont',
-          'Virgin Island',
-          'Virginia',
-          'Washington',
-          'West Virginia',
-          'Wisconsin',
-          'Wyoming',
-        ],
+        selectedItems: null,
       }
     },
     watch: {
       search (val) {
-        val && val !== this.select && this.querySelections(val)
+        val && val !== this.selectedItems && this.searchCountries(val);
       },
+      //TODO Check this part
+      selectedItems() {
+        this.filter();
+      }
     },
     methods: {
-      querySelections (v) {
-        this.loading = true
-        // Simulated ajax query
-        setTimeout(() => {
-          this.items = this.states.filter(e => {
-            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+      ...mapActions(['filterCountriesData']),
+      searchCountries (v) {
+          this.foundItems = this.countriesList.filter(e => {
+            return (e || '').toLowerCase().includes((v || '').toLowerCase());
           })
-          this.loading = false
-        }, 500)
       },
+      filter(){
+        this.filterCountriesData({field: 'Country', fieldValuesList: this.selectedItems});
+      }
     },
+    computed: {
+      ...mapGetters(['countriesList'])
+    }
   }
 </script>
