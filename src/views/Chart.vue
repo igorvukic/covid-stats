@@ -1,89 +1,58 @@
 <template>
-  <vue-frappe
-    id="test"
-    :labels="chartData.labels"
-    title="My Awesome Chart"
-    type="axis-mixed"
-    :height="500"
-    :colors="['#01579B', '#0288D1', '#29B6F6']"
-    :dataSets="chartData.mappedData"
-  >
-  </vue-frappe>
+  <v-container>
+    <vue-frappe
+      id="test"
+      :labels="chartData.labels"
+      type="axis-mixed"
+      :height="500"
+      :colors="['#01579B', '#0288D1', '#29B6F6']"
+      :dataSets="chartData.mappedData"
+    >
+    </vue-frappe>
+  </v-container>
 </template>
 <script>
-import { VueFrappe } from 'vue2-frappe';
-import { mapState } from 'vuex';
+//TODO Loader
+import { VueFrappe } from "vue2-frappe";
+import { mapState } from "vuex";
 
 export default {
   components: {
     VueFrappe,
   },
-  data() {
-    return {
-    //   labels:[
-    //   '12am-3am',
-    //   '3am-6am',
-    //   '6am-9am',
-    //   '9am-12pm',
-    //   '12pm-3pm',
-    //   '3pm-6pm',
-    //   '6pm-9pm',
-    //   '9pm-12am',
-    // ],
-    //   chartData: [
-    //     {
-    //       name: "Some Data",
-    //       chartType: "bar",
-    //       values: [25, 40, 30, 35, 8, 52, 17, -4],
-    //     },
-    //     {
-    //       name: "Another Set",
-    //       chartType: "bar",
-    //       values: [25, 50, -10, 15, 18, 32, 27, 14],
-    //     },
-    //     {
-    //       name: "Yet Another",
-    //       chartType: "bar",
-    //       values: [15, 20, -3, -15, 58, 12, -17, 37],
-    //     },
-    //   ],
-    };
-  },
   computed: {
     ...mapState(["filteredCountriesData"]),
-    chartData(){
+    chartData() {
       const mappedData = [
         {
-          name: 'Total Confirmed',
-          chartType: 'bar',
+          name: "Total Confirmed",
+          chartType: "bar",
           values: [],
-          field: 'TotalConfirmed'
+          field: "TotalConfirmed",
         },
         {
-          name: 'Total Deaths',
-          chartType: 'bar',
+          name: "Total Deaths",
+          chartType: "bar",
           values: [],
-          field: 'TotalDeaths'
+          field: "TotalDeaths",
         },
         {
-          name: 'Total Recovered',
-          chartType: 'bar',
+          name: "Total Recovered",
+          chartType: "bar",
           values: [],
-          field: 'TotalRecovered'
-        }
-
-      ]
+          field: "TotalRecovered",
+        },
+      ];
       const labels = [];
-      this.filteredCountriesData.forEach(country => {
+      this.filteredCountriesData.forEach((country) => {
         labels.push(country.Country);
-        mappedData.map(category => category.values.push(country[category.field]))
-      }
-      );
-
-      return {labels, mappedData}
-    }
-  }
-
+        mappedData.forEach((category) =>
+          category.values.push(country[category.field])
+        );
+      });
+      return { labels, mappedData };
+    },
+  },
 };
 </script>
 

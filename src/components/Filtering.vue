@@ -29,12 +29,11 @@ import { mapActions, mapGetters } from 'vuex'
       }
     },
     watch: {
-      search (val) {
-        val && val !== this.selectedItems && this.searchCountries(val);
+      search(val) {
+        val && this.searchCountries(val);
       },
-      //TODO Check this part
       selectedItems() {
-        this.filter();
+        this.filterData();
       }
     },
     methods: {
@@ -44,7 +43,7 @@ import { mapActions, mapGetters } from 'vuex'
             return (e || '').toLowerCase().includes((v || '').toLowerCase());
           })
       },
-      filter(){
+      filterData(){
         this.filterCountriesData({field: 'Country', fieldValuesList: this.selectedItems});
       }
     },

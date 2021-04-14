@@ -16,10 +16,17 @@
 <script>
 import Navbar from "@/components/Navbar";
 import Filtering from "@/components/Filtering";
+import { mapActions } from 'vuex';
 
 export default {
   name: "App",
   components: { Navbar, Filtering },
   data: () => ({}),
+  methods:{
+    ...mapActions(['getCountriesData'])
+  },
+  created(){
+    this.getCountriesData();
+  }
 };
 </script>

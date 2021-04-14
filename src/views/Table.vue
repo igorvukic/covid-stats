@@ -9,12 +9,15 @@
       :loading="loading"
       loading-text="Loading countries data..."
     >
+      <!-- eslint-disable-next-line -->
       <template v-slot:item.TotalConfirmed="{ item }">
         {{ item.TotalConfirmed | formatNumber }}
       </template>
+      <!-- eslint-disable-next-line -->
       <template v-slot:item.TotalDeaths="{ item }">
         {{ item.TotalDeaths | formatNumber }}
       </template>
+      <!-- eslint-disable-next-line -->
       <template v-slot:item.TotalRecovered="{ item }">
         {{ item.TotalRecovered | formatNumber }}
       </template>
@@ -36,7 +39,7 @@
   </v-container>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -47,7 +50,6 @@ export default {
         { text: "Total Deaths", value: "TotalDeaths", align: "end" },
         { text: "Total Recovered", value: "TotalRecovered", align: "end" },
       ],
-      loading: false,
     };
   },
   computed: {
@@ -65,20 +67,9 @@ export default {
         recovered: 0,
       });
     },
-  },
-  methods: {
-    ...mapActions(["getCountriesData"]),
-
-    async loadCountriesData() {
-      if (!this.filteredCountriesData.length) {
-        this.loading = true;
-        await this.getCountriesData();
-        this.loading = false;
-      }
+    loading() {
+      return !!this.$store.state.loading;
     },
-  },
-  async created() {
-    await this.loadCountriesData();
   },
 };
 </script>
