@@ -1,13 +1,17 @@
 <template>
   <v-container>
+    <v-skeleton-loader
+      type="table"
+      v-if="loading"
+      height="500"
+    ></v-skeleton-loader>
     <v-data-table
+      v-else
       :headers="headers"
       :items="filteredCountriesData"
       class="elevation-1"
       disable-pagination
       hide-default-footer
-      :loading="loading"
-      loading-text="Loading countries data..."
     >
       <!-- eslint-disable-next-line -->
       <template v-slot:item.TotalConfirmed="{ item }">
