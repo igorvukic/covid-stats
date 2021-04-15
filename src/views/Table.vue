@@ -1,9 +1,8 @@
 <template>
   <v-container>
     <v-skeleton-loader
-      type="table"
+      type="table-thead, table-row-divider@12"
       v-if="loading"
-      height="500"
     ></v-skeleton-loader>
     <v-data-table
       v-else
